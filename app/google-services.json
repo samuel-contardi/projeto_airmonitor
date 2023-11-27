@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "409743607093",
+    "firebase_url": "https://airmonitor-9fd3e-default-rtdb.firebaseio.com",
+    "project_id": "airmonitor-9fd3e",
+    "storage_bucket": "airmonitor-9fd3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409743607093:android:9d75a16c009818f121387c",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASG2vzgpagovR1CZBoQdVWX01DR916F8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

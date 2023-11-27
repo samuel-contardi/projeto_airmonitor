@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="azul">#e6f3ff</color>
+    <color name="black">#FF000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="white">#FFFFFFFF</color>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <string name="app_name">Air Monitor </string>
+    <string name="firebase_database_url" translatable="false">https://airmonitor-9fd3e-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">409743607093</string>
+    <string name="google_api_key" translatable="false">AIzaSyASG2vzgpagovR1CZBoQdVWX01DR916F8I</string>
+    <string name="google_app_id" translatable="false">1:409743607093:android:9d75a16c009818f121387c</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyASG2vzgpagovR1CZBoQdVWX01DR916F8I</string>
+    <string name="google_storage_bucket" translatable="false">airmonitor-9fd3e.appspot.com</string>
+    <string name="label_do_dataset">Label do DataSet</string>
+    <string name="project_id" translatable="false">airmonitor-9fd3e</string>
+    <string name="valor_nao_disponivel">Valor não disponível</string>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#FF4081</item>
+    </style>
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication"/>
+</resources>

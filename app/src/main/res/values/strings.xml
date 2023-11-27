@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Air Monitor </string>
+    <string name="valor_nao_disponivel">Valor não disponível</string>
+    <string name="label_do_dataset">Label do DataSet</string>
+</resources>
