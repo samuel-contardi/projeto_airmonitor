@@ -20,6 +20,9 @@
             android:name=".HistoricoActivity"
             android:exported="false" />
         <activity
+            android:name=".GlpActivity"
+            android:exported="false" />
+        <activity
             android:name=".Co2Activity"
             android:exported="false" />
         <activity
