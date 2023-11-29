@@ -8,7 +8,8 @@ Codificou métodos:
 	Métodos em várias classes, como onCreate, setOnClickListener, e outros métodos relacionados à interação do usuário. Esses métodos são usados para definir o comportamento da atividade quando eventos ocorrem, como cliques nos botões.
 
 Codificou  atributos protegidos e/ou privados:
-	Os atributos private ImageButton temp,private ImageButton umid etc. são usado para garantir que eles não possam ser acessados diretamente de fora da classe. Isso ajuda a manter o código seguro e facilita a manutenção futura, pois você controla o acesso a esses atributos por meio de métodos públicos. Essa prática segue princípios de encapsulamento e boa programação orientada a objetos..
+	Os atributos private ImageButton temp,private ImageButton umid etc. são usado para garantir que eles não possam ser acessados diretamente de fora da classe.
+	Isso ajuda a manter o código seguro e facilita a manutenção futura, pois você controla o acesso a esses atributos por meio de métodos públicos.
 
 Codificou métodos protegidos e/ou privados:
 	Os métodos onClick em cada botão são métodos privados que lidam com ações de clique. Eles são privados porque não precisam ser acessados fora da classe MainActivity.
@@ -78,3 +79,7 @@ Usou conceitos de SOLID
 	sem a necessidade de modificar as classes existentes. Isso pode ser observado, por exemplo, ao adicionar novos métodos 
 	ou lógica específica sem alterar os métodos existentes.
 
+UML
+
+	o diagrama UML oferece uma visão visual da estrutura e interações da classe MainActivity em um aplicativo Android, destacando sua dependência e interação com os botões de imagem,
+	bem como a divisão de responsabilidades entre os métodos onCreate e setListeners
