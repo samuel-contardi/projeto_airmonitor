@@ -1,0 +1,80 @@
+Codificou classes:
+Classes como MainActivity, TempActivity, UmidActivity, Co2Activity, GlpActivity. Cada uma dessas classes representa uma atividade dentro do aplicativo Android.
+
+Codificou atributos:
+Atributos nas classes, como temp, umid, co2, glp, e hist. Esses atributos são do tipo ImageButton e são usados para referenciar botões de imagem na interface do usuário.
+
+Codificou métodos:
+Métodos em várias classes, como onCreate, setOnClickListener, e outros métodos relacionados à interação do usuário. Esses métodos são usados para definir o comportamento da atividade quando eventos ocorrem, como cliques nos botões.
+
+Codificou  atributos protegidos e/ou privados:
+Os atributos private ImageButton temp,private ImageButton umid etc. são usado para garantir que eles não possam ser acessados diretamente de fora da classe. Isso ajuda a manter o código seguro e facilita a manutenção futura, pois você controla o acesso a esses atributos por meio de métodos públicos. Essa prática segue princípios de encapsulamento e boa programação orientada a objetos..
+
+Codificou métodos protegidos e/ou privados:
+Os métodos onClick em cada botão são métodos privados que lidam com ações de clique. Eles são privados porque não precisam ser acessados fora da classe MainActivity.
+
+instanciou objetos:
+Instâncias de  objetos das classes TempActivity, UmidActivity, Co2Activity, GlpActivity, quando os respectivos botões são clicados.
+
+Identificou e codificou classes de comportamento:
+As classes  como TempActivity, UmidActivity, Co2Activity, GlpActivity, e outras, representam classes de comportamento, pois definem o comportamento das atividades do aplicativo.
+
+Ocultou informações usando atributos e/ou métodos protected/private:
+atributos privados e métodos privados para encapsular o comportamento interno das classes, como os métodos onClick e os atributos temp, umid, etc.
+
+Código Limpo:
+Nomes Descritivos: como temp, umid, co2, glp, e hist, o que facilita a compreensão de sua finalidade.
+Funções/Métodos Pequenos: métodos de clique (onClick) para os botões, que mantêm cada ação específica em métodos separados, seguindo o princípio da responsabilidade única.
+Sem Duplicação de Código
+Indentação e Espaçamento Consistentes
+
+P2
+
+Codificou atributos estáticos
+	O atributo estático SPLASH_TIME_OUT, da classe SplashActivity,
+	representa a duração do tempo de exibição da tela de introdução,
+	sendo compartilhado por todas as instâncias para garantir clareza e eficiência no código.
+	O nome e tipo foram escolhidos para indicar a finalidade do atributo e manter consistência
+	na representação de valores de tempo em milissegundos.
+
+Codificou métodos construtores
+	embora não haja um construtor explícito na classes, ela ainda tem um construtor implicitamente 
+	herdado da classe base AppCompatActivity. Isso é comum em Java, onde, se não for fornecido um construtor explícito, 
+	a classe base fornece um construtor padrão (sem argumentos) que pode ser chamado implicitamente.
+
+Instalou e usou bibliotecas de terceiros
+	Biblioteca: mpandroidchart, Essa biblioteca é usada para criar gráficos interativos no Android.
+
+Codificou enums
+	enumeração chamada EstadoTemperatura, que representa os estados possíveis da temperatura.
+
+Codificou propriedades
+	Tipo: TextView
+	Descrição: Representa uma propriedade que armazena a referência a um elemento TextView no layout da atividade.
+	 	   É usada para exibir na interface do usuário como temperatura.
+	Tipo: LineChart
+	Descrição: É uma propriedade que mantém a referência a um gráfico de linha (LineChart) da biblioteca MPAndroidChart.
+		   Essa propriedade é usada para configurar e atualizar o gráfico com dados de temperatura.
+
+Identificou e codificou classes de dados
+	 há uma enumeração que é usada para representar estados de (BAIXA e ALTA) e seus limites correspondentes. 
+	 Essa enumeração pode ser considerada uma classe de dados, embora seja uma estrutura leve usada para definir
+	 constantes relacionadas ao estado .
+
+Codificou classes imutáveis
+	Classes imutáveis, como a enumeração EstadoTemperatura, proporcionam estabilidade e previsibilidade ao código, 
+	evitando alterações inadvertidas de estados. Elas são thread-safe, facilitam o uso em estruturas como switch e contribuem 
+	para uma semântica coesa, promovendo segurança e facilidade de teste.
+
+Usou conceitos de SOLID
+
+	Princípio da Responsabilidade Única (SRP):
+	Cada método no código tem uma responsabilidade única e bem definida. 
+	Por exemplo, os métodos atualizarGrafico, atualizarTextView, verificarTemperatura e enviarNotificacao realizam tarefas específicas relacionadas a gráficos, 
+	atualizações de interface do usuário e manipulação de notificações.
+
+	Princípio Aberto/Fechado (OCP):
+	O código é extensível para a adição de novos comportamentos ou funcionalidades 
+	sem a necessidade de modificar as classes existentes. Isso pode ser observado, por exemplo, ao adicionar novos métodos 
+	ou lógica específica sem alterar os métodos existentes.
+
