@@ -28,10 +28,12 @@ import java.util.Date;
 import java.util.List;
 
 public class UmidadeActivity extends AppCompatActivity {
+
     private TextView umidadeTextView;
     private LineChart umidadeChart;
     private List<Double> umidadeList;
-    public enum EstadoUmidade{
+
+    public enum EstadoUmidade {
         BAIXA(12.0),
         ALTA(60.0);
 
@@ -56,6 +58,7 @@ public class UmidadeActivity extends AppCompatActivity {
         umidadeList = new ArrayList<>();
 
         configureChart();
+        carregarDadosDoFirebase();
 
         DatabaseReference umidadeRef = FirebaseDatabase.getInstance().getReference().child("Humidity:");
         umidadeRef.addValueEventListener(new ValueEventListener() {
@@ -64,19 +67,24 @@ public class UmidadeActivity extends AppCompatActivity {
                 Double umidade = dataSnapshot.getValue(Double.class);
 
                 if (umidade != null) {
-                    umidadeList.add(umidade);
-                    atualizarTextView();
-                    atualizarGrafico();
-                    verificarUmidade(umidade);
+                    if (umidadeList.isEmpty() || Math.abs(umidade - umidadeList.get(umidadeList.size() - 1)) >= 0.5) {
+                        umidadeList.add(umidade);
+                        salvarListaNoFirebase();
+                        atualizarTextView();
+                        atualizarGrafico();
+                        verificarUmidade(umidade);
+                        verificarLimiteLista();
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle error
             }
         });
     }
+
     private void configureChart() {
         umidadeChart.setTouchEnabled(true);
         umidadeChart.setDragEnabled(true);
@@ -86,25 +94,48 @@ public class UmidadeActivity extends AppCompatActivity {
         description.setText("Histórico de Umidade");
         umidadeChart.setDescription(description);
     }
+
     private void atualizarGrafico() {
-        if (umidadeList.size() <= 1){
+        if (umidadeList.size() <= 1) {
             return;
         }
-        List<Entry> entries = new ArrayList<>();
-        Double ultimaUmidade = umidadeList.get(umidadeList.size() - 1);
 
-        for (int i = 0; i < umidadeList.size() - 1; i++) {
-            double variacao = Math.abs(umidadeList.get(i) - umidadeList.get(i + 1));
-            if (variacao >= 0.5) {
-                entries.add(new Entry(i, umidadeList.get(i).floatValue()));
-            }
+        List<Entry> entries = new ArrayList<>();
+
+        for (int i = 0; i < umidadeList.size(); i++) {
+            entries.add(new Entry(i, umidadeList.get(i).floatValue()));
         }
-        entries.add(new Entry(umidadeList.size() - 1, ultimaUmidade.floatValue()));
+
         LineDataSet dataSet = new LineDataSet(entries, "Umidade");
         LineData lineData = new LineData(dataSet);
 
         umidadeChart.setData(lineData);
         umidadeChart.invalidate();
+    }
+
+    private void verificarLimiteLista() {
+        if (umidadeList.size() >= 50) {
+            limparLista();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void limparLista() {
+        umidadeList.clear();
+        umidadeChart.clear();
+        umidadeTextView.setText("Sem Dados de Umidade");
+        DatabaseReference umidadeListaRef = FirebaseDatabase.getInstance().getReference().child("UmidadeLista");
+        umidadeListaRef.removeValue();
+    }
+
+    private void salvarListaNoFirebase() {
+        DatabaseReference umidadeListaRef = FirebaseDatabase.getInstance().getReference().child("UmidadeLista");
+        umidadeListaRef.setValue(umidadeList);
+
+        if (umidadeList.size() >= 100) {
+            umidadeListaRef.removeValue();
+            limparLista();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -125,28 +156,20 @@ public class UmidadeActivity extends AppCompatActivity {
         }
         adicionarAoHistorico(umidade);
     }
+
     private void adicionarAoHistorico(Double valor) {
         DatabaseReference historicoRef = FirebaseDatabase.getInstance().getReference().child("Historico");
 
-        // Obtém a data e hora atual
         Date dataAtual = new Date();
-
-        // Cria um formato de data e hora usando a configuração local
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
-
-        // Formata a data e hora
         String dataHora = dateFormat.format(dataAtual);
 
-        // Cria um novo item de histórico
         HistoricoItem historicoItem = new HistoricoItem(dataHora, valor, "Umidade");
-
-        // Adiciona ao Firebase
         historicoRef.push().setValue(historicoItem);
     }
+
     private void enviarNotificacao(String titulo, String mensagem) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Verificar se o dispositivo está executando o Android 8.0 (Oreo) ou superior
         criarCanalNotificacao(notificationManager);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "canal_id")
@@ -155,11 +178,8 @@ public class UmidadeActivity extends AppCompatActivity {
                 .setContentText(mensagem)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        // Certifique-se de usar um ID de notificação exclusivo para cada notificação
         notificationManager.notify(2, builder.build());
     }
-
-    // Método para criar um canal de notificação (Oreo e superior)
 
     private void criarCanalNotificacao(NotificationManager notificationManager) {
         String channelId = "canal_id";
@@ -168,5 +188,31 @@ public class UmidadeActivity extends AppCompatActivity {
 
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    private void carregarDadosDoFirebase() {
+        DatabaseReference umidadeListaRef = FirebaseDatabase.getInstance().getReference().child("UmidadeLista");
+
+        umidadeListaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                umidadeList.clear();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Double umidade = snapshot.getValue(Double.class);
+                    if (umidade != null) {
+                        umidadeList.add(umidade);
+                    }
+                }
+
+                atualizarGrafico();
+                atualizarTextView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
     }
 }

@@ -43,7 +43,6 @@ public class HistoricoActivity extends AppCompatActivity {
     }
 
     private void carregarHistoricoDoFirebase() {
-        // Substitua o caminho abaixo com a referência correta ao nó "Historico" no seu Firebase
         DatabaseReference historicoRef = FirebaseDatabase.getInstance().getReference().child("Historico");
 
         historicoRef.addValueEventListener(new ValueEventListener() {
@@ -53,7 +52,6 @@ public class HistoricoActivity extends AppCompatActivity {
                 historicoItemList.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // Converte o snapshot para o tipo HistoricoItem
                     HistoricoItem historicoItem = snapshot.getValue(HistoricoItem.class);
 
                     if (historicoItem != null) {
@@ -62,6 +60,7 @@ public class HistoricoActivity extends AppCompatActivity {
                 }
 
                 historicoAdapter.notifyDataSetChanged();
+                verificarLimiteLista();
             }
 
             @Override
@@ -70,4 +69,21 @@ public class HistoricoActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void verificarLimiteLista() {
+        if (historicoItemList.size() >= 20) {
+            limparHistorico();
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void limparHistorico() {
+        historicoItemList.clear();
+        historicoAdapter.notifyDataSetChanged();
+
+        // Limpar também no Firebase
+        DatabaseReference historicoRef = FirebaseDatabase.getInstance().getReference().child("Historico");
+        historicoRef.removeValue();
+    }
 }
+

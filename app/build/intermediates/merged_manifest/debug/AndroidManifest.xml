@@ -32,10 +32,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.MyApplication" >
         <activity
             android:name="com.example.myapplication.HistoricoActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.myapplication.GlpActivity"
             android:exported="false" />
         <activity
             android:name="com.example.myapplication.Co2Activity"

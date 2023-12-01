@@ -5,6 +5,7 @@ color black
 color colorAccent
 color colorPrimary
 color colorPrimaryDark
+color ic_launcher_background
 color white
 dimen activity_horizontal_margin
 dimen activity_vertical_margin
@@ -16,9 +17,14 @@ drawable ic_launcher_foreground
 drawable logo2
 drawable temperatura
 drawable umidade
+id categoriaTextView
 id co2
+id co2Chart
+id co2TextView
 id dataHoraTextView
 id glp
+id glpChart
+id glpTextView
 id hist
 id mainLayout
 id recyclerView
@@ -37,8 +43,8 @@ layout activity_temperatura
 layout activity_umidade
 layout item_historico
 mipmap ic_launcher
+mipmap ic_launcher_foreground
 mipmap ic_launcher_round
-raw alarme_sound
 string app_name
 string firebase_database_url
 string gcm_defaultSenderId

@@ -58,7 +58,7 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.Hist
             } else if ("Umidade".equals(historicoItem.getTipoLeitura())) {
                 categoriaTextView.setText("Umidade: " + historicoItem.getValor() + "%");
             } else if ("GLP".equals(historicoItem.getTipoLeitura())) {
-                categoriaTextView.setText("GLP: " + historicoItem.getValor() + "%");
+                categoriaTextView.setText("GLP: " + historicoItem.getValor() + "ppm");
             } else if ("C02".equals(historicoItem.getTipoLeitura())) {
                 categoriaTextView.setText("C02: " + historicoItem.getValor() + "%");
             }

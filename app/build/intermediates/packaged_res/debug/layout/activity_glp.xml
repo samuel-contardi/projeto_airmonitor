@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
     android:layout_height="match_parent"
     tools:context=".GlpActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/glpChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/glpTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GLP Atual: N/A"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/glpChart"
+        tools:ignore="HardcodedText" />
+
+</RelativeLayout>

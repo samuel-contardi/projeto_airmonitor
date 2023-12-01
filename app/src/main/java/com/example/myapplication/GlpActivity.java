@@ -31,9 +31,10 @@ public class GlpActivity extends AppCompatActivity {
     private TextView glpTextView;
     private LineChart glpChart;
     private List<Double> glpList;
+
     public enum EstadoGlp {
-        alerta(25.0),
-        ALTA(45.0);
+        ALERTA(1000.0),
+        ALTA(1200.0);
 
         private final double limite;
 
@@ -55,18 +56,23 @@ public class GlpActivity extends AppCompatActivity {
         glpList = new ArrayList<>();
 
         configureChart();
+        carregarDadosDoFirebase();
 
-        DatabaseReference glpRef = FirebaseDatabase.getInstance().getReference().child("*****:");
+        DatabaseReference glpRef = FirebaseDatabase.getInstance().getReference().child("GLP:");
         glpRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Double glp = dataSnapshot.getValue(Double.class);
 
                 if (glp != null) {
-                    glpList.add(glp);
-                    atualizarTextView();
-                    atualizarGrafico();
-                    verificarGlp(glp);
+                    if (glpList.isEmpty() || Math.abs(glp - glpList.get(glpList.size() - 1)) >= 50.0) {
+                        glpList.add(glp);
+                        salvarListaNoFirebase();
+                        atualizarTextView();
+                        atualizarGrafico();
+                        verificarGlp(glp);
+                        verificarLimiteLista();
+                    }
                 }
             }
 
@@ -76,6 +82,7 @@ public class GlpActivity extends AppCompatActivity {
             }
         });
     }
+
     private void configureChart() {
         glpChart.setTouchEnabled(true);
         glpChart.setDragEnabled(true);
@@ -85,8 +92,9 @@ public class GlpActivity extends AppCompatActivity {
         description.setText("Histórico de GLP");
         glpChart.setDescription(description);
     }
+
     private void atualizarGrafico() {
-        if (glpList.size() <= 1){
+        if (glpList.size() <= 1) {
             return;
         }
         List<Entry> entries = new ArrayList<>();
@@ -110,20 +118,22 @@ public class GlpActivity extends AppCompatActivity {
     private void atualizarTextView() {
         if (!glpList.isEmpty()) {
             Double ultimoGlp = glpList.get(glpList.size() - 1);
-            glpTextView.setText("Nível de GLP Atual: " + ultimoGlp + "%");
+            glpTextView.setText("Nível de GLP Atual: " + ultimoGlp + "ppm");
         } else {
             glpTextView.setText("Sem Dados de GLP");
         }
     }
 
-    private void verificarGlp(double glp) {
-        if (glp < GlpActivity.EstadoGlp.alerta.getLimite()) {
-            enviarNotificacao("Alerta! Glp ", "O Nível de GLP está aumentando! " + glp + "%");
-        } else if (glp > GlpActivity.EstadoGlp.ALTA.getLimite()) {
-            enviarNotificacao("Alerta! Glp Alto", "O Nível de GLP esta auto cuidado!  " + glp + "%");
+    private void verificarGlp(Double glp) {
+        if (glp > EstadoGlp.ALERTA.getLimite() && glp < EstadoGlp.ALTA.getLimite()) {
+            enviarNotificacao("Alerta! GLP", "O Nível de GLP está aumentando! " + glp + "ppm");
+            adicionarAoHistorico(glp);
+        } else if (glp > EstadoGlp.ALTA.getLimite()) {
+            enviarNotificacao("Alerta! GLP Alto", "O Nível de GLP está alto! " + glp + "ppm");
+            adicionarAoHistorico(glp);
         }
-        adicionarAoHistorico(glp);
     }
+
     private void adicionarAoHistorico(Double valor) {
         DatabaseReference historicoRef = FirebaseDatabase.getInstance().getReference().child("Historico");
 
@@ -137,6 +147,7 @@ public class GlpActivity extends AppCompatActivity {
 
         historicoRef.push().setValue(historicoItem);
     }
+
     private void enviarNotificacao(String titulo, String mensagem) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -158,5 +169,56 @@ public class GlpActivity extends AppCompatActivity {
 
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    private void verificarLimiteLista() {
+        if (glpList.size() >= 50) {
+            limparLista();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void limparLista() {
+        glpList.clear();
+        glpChart.clear();
+        glpTextView.setText("Sem Dados de GLP");
+        DatabaseReference glpListaRef = FirebaseDatabase.getInstance().getReference().child("GlpLista");
+        glpListaRef.removeValue();
+    }
+
+    private void salvarListaNoFirebase() {
+        DatabaseReference glpListaRef = FirebaseDatabase.getInstance().getReference().child("GlpLista");
+        glpListaRef.setValue(glpList);
+
+        if (glpList.size() >= 100) {
+            glpListaRef.removeValue();
+            limparLista();
+        }
+    }
+
+    private void carregarDadosDoFirebase() {
+        DatabaseReference glpListaRef = FirebaseDatabase.getInstance().getReference().child("GlpLista");
+
+        glpListaRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                glpList.clear();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Double glp = snapshot.getValue(Double.class);
+                    if (glp != null) {
+                        glpList.add(glp);
+                    }
+                }
+
+                atualizarGrafico();
+                atualizarTextView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
     }
 }
