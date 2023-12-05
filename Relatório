@@ -32,54 +32,33 @@ Código Limpo:
 P2
 
 Codificou atributos estáticos
-	O atributo estático SPLASH_TIME_OUT, da classe SplashActivity,
-	representa a duração do tempo de exibição da tela de introdução,
-	sendo compartilhado por todas as instâncias para garantir clareza e eficiência no código.
-	O nome e tipo foram escolhidos para indicar a finalidade do atributo e manter consistência
-	na representação de valores de tempo em milissegundos.
+	O atributo estático SPLASH_TIME_OUT, da classe SplashActivity, esse atributo serve pra contar o tempo que a primeira tela com a logo e o nome do app fica aparecendo antes 
+	de mudar de pagina altomaticamente									
 
 Codificou métodos construtores
-	embora não haja um construtor explícito na classes, ela ainda tem um construtor implicitamente 
-	herdado da classe base AppCompatActivity. Isso é comum em Java, onde, se não for fornecido um construtor explícito, 
-	a classe base fornece um construtor padrão (sem argumentos) que pode ser chamado implicitamente.
+	A classe não tem um metodo contrutor de cara mas ela tem construtor herdado da classe AppCompatActivity, que até que é normal em java construtor assim pelo menos foi oque 
+	a gente descobriu
 
 Instalou e usou bibliotecas de terceiros
-	Biblioteca: mpandroidchart, Essa biblioteca é usada para criar gráficos interativos no Android.
+	A biblioteca mpandroidchart serve pra fazer graficos que que se movem por banco de dados no Android
 
 Codificou enums
-	enumeração chamada EstadoTemperatura, que representa os estados possíveis da temperatura.
+	enumeração chamada EstadoTemperatura, representa um valor de temperatura proximo do ambiente atual
 
 Codificou propriedades
-	Tipo: TextView
-	Descrição: Representa uma propriedade que armazena a referência a um elemento TextView no layout da atividade.
-	 	   É usada para exibir na interface do usuário como temperatura.
-	Tipo: LineChart
-	Descrição: É uma propriedade que mantém a referência a um gráfico de linha (LineChart) da biblioteca MPAndroidChart.
-		   Essa propriedade é usada para configurar e atualizar o gráfico com dados de temperatura.
+	A TextView representa um texto que é mostrado no layout do aplicativo para o usuario
 
-Identificou e codificou classes de dados
-	 há uma enumeração que é usada para representar estados de (BAIXA e ALTA) e seus limites correspondentes. 
-	 Essa enumeração pode ser considerada uma classe de dados, embora seja uma estrutura leve usada para definir
-	 constantes relacionadas ao estado .
 
 Codificou classes imutáveis
-	Classes imutáveis, como a enumeração EstadoTemperatura, proporcionam estabilidade e previsibilidade ao código, 
-	evitando alterações inadvertidas de estados. Elas são thread-safe, facilitam o uso em estruturas como switch e contribuem 
-	para uma semântica coesa, promovendo segurança e facilidade de teste.
+	A classe EstadoTemperatura é uma classe imutavel, basicamente isso garante uma maior estabilidade e evita que o mude de estado inadivertidamente, deixando assim mais seguro, 
+	e deixando testes mais faceis de serem executados
 
 Usou conceitos de SOLID
+	SRP: o metodo atualizarGrafico, atualizarTextView realiza tarefas expecificas mesmo que estão modificando coisas na mesma pagina
 
-	Princípio da Responsabilidade Única (SRP):
-	Cada método no código tem uma responsabilidade única e bem definida. 
-	Por exemplo, os métodos atualizarGrafico, atualizarTextView, verificarTemperatura e enviarNotificacao realizam tarefas específicas relacionadas a gráficos, 
-	atualizações de interface do usuário e manipulação de notificações.
-
-	Princípio Aberto/Fechado (OCP):
-	O código é extensível para a adição de novos comportamentos ou funcionalidades 
-	sem a necessidade de modificar as classes existentes. Isso pode ser observado, por exemplo, ao adicionar novos métodos 
-	ou lógica específica sem alterar os métodos existentes.
+	OCP:O codigo é muito grande para ficar adicionando novos metodos e funcionalidadessem a necessidade de modificar as classes existentes. 
+	Isso pode ser observado, por exemplo, ao adicionar novos métodos ou lógica específica sem alterar os métodos existentes.
 
 UML
 
-	o diagrama UML oferece uma visão visual da estrutura e interações da classe MainActivity em um aplicativo Android, destacando sua dependência e interação com os botões de imagem,
-	bem como a divisão de responsabilidades entre os métodos onCreate e setListeners
+	O diagrama em UML offerece uma visão doque ta rolando no codigo sem necessariamente mostrar ele e é exelente para explicar a logica do codigo com uma só imagem
